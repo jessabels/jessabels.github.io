@@ -1,123 +1,156 @@
-/*
-	Prologue by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+/**
+* Template Name: DevFolio - v2.4.0
+* Template URL: https://bootstrapmade.com/devfolio-bootstrap-portfolio-html-template/
+* Author: BootstrapMade.com
+* License: https://bootstrapmade.com/license/
 */
-
 (function($) {
+  "use strict";
 
-	var	$window = $(window),
-		$body = $('body'),
-		$nav = $('#nav');
+  var nav = $('nav');
+  var navHeight = nav.outerHeight();
 
-	// Breakpoints.
-		breakpoints({
-			wide:      [ '961px',  '1880px' ],
-			normal:    [ '961px',  '1620px' ],
-			narrow:    [ '961px',  '1320px' ],
-			narrower:  [ '737px',  '960px'  ],
-			mobile:    [ null,     '736px'  ]
-		});
+  $('.navbar-toggler').on('click', function() {
+    if (!$('#mainNav').hasClass('navbar-reduce')) {
+      $('#mainNav').addClass('navbar-reduce');
+    }
+  })
 
-	// Play initial animations on page load.
-		$window.on('load', function() {
-			window.setTimeout(function() {
-				$body.removeClass('is-preload');
-			}, 100);
-		});
+  // Preloader
+  $(window).on('load', function() {
+    if ($('#preloader').length) {
+      $('#preloader').delay(100).fadeOut('slow', function() {
+        $(this).remove();
+      });
+    }
+  });
 
-	// Nav.
-		var $nav_a = $nav.find('a');
+  // Back to top button
+  $(window).scroll(function() {
+    if ($(this).scrollTop() > 100) {
+      $('.back-to-top').fadeIn('slow');
+    } else {
+      $('.back-to-top').fadeOut('slow');
+    }
+  });
+  $('.back-to-top').click(function() {
+    $('html, body').animate({
+      scrollTop: 0
+    }, 1500, 'easeInOutExpo');
+    return false;
+  });
 
-		$nav_a
-			.addClass('scrolly')
-			.on('click', function(e) {
+  /*--/ Star ScrollTop /--*/
+  $('.scrolltop-mf').on("click", function() {
+    $('html, body').animate({
+      scrollTop: 0
+    }, 1000);
+  });
 
-				var $this = $(this);
+  /*--/ Star Counter /--*/
+  $('.counter').counterUp({
+    delay: 15,
+    time: 2000
+  });
 
-				// External link? Bail.
-					if ($this.attr('href').charAt(0) != '#')
-						return;
+  /*--/ Star Scrolling nav /--*/
+  var mainNav_height = $('#mainNav').outerHeight() - 22;
+  $('a.js-scroll[href*="#"]:not([href="#"])').on("click", function() {
+    if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+      if (target.length) {
+        var scrollto = target.offset().top - mainNav_height;
+        $('html, body').animate({
+          scrollTop: scrollto
+        }, 1000, "easeInOutExpo");
+        return false;
+      }
+    }
+  });
 
-				// Prevent default.
-					e.preventDefault();
+  // Scroll to sections on load with hash links
+  if (window.location.hash) {
+    var initial_nav = window.location.hash;
+    if ($(initial_nav).length) {
+      var scrollto_initial = $(initial_nav).offset().top - mainNav_height;
+      $('html, body').animate({
+        scrollTop: scrollto_initial
+      }, 1000, "easeInOutExpo");
+    }
+  }
 
-				// Deactivate all links.
-					$nav_a.removeClass('active');
+  // Closes responsive menu when a scroll trigger link is clicked
+  $('.js-scroll').on("click", function() {
+    $('.navbar-collapse').collapse('hide');
+  });
 
-				// Activate link *and* lock it (so Scrollex doesn't try to activate other links as we're scrolling to this one's section).
-					$this
-						.addClass('active')
-						.addClass('active-locked');
+  // Activate scrollspy to add active class to navbar items on scroll
+  $('body').scrollspy({
+    target: '#mainNav',
+    offset: navHeight
+  });
+  /*--/ End Scrolling nav /--*/
 
-			})
-			.each(function() {
+  /*--/ Navbar Menu Reduce /--*/
+  $(window).trigger('scroll');
+  $(window).on('scroll', function() {
+    var pixels = 50;
+    var top = 1200;
+    if ($(window).scrollTop() > pixels) {
+      $('.navbar-expand-md').addClass('navbar-reduce');
+      $('.navbar-expand-md').removeClass('navbar-trans');
+    } else {
+      if (!$('#navbarDefault').hasClass('show')) {
+        $('.navbar-expand-md').removeClass('navbar-reduce');
+      }
+      $('.navbar-expand-md').addClass('navbar-trans');
+    }
+    if ($(window).scrollTop() > top) {
+      $('.scrolltop-mf').fadeIn(1000, "easeInOutExpo");
+    } else {
+      $('.scrolltop-mf').fadeOut(1000, "easeInOutExpo");
+    }
+  });
 
-				var	$this = $(this),
-					id = $this.attr('href'),
-					$section = $(id);
+  /*--/ Star Typed /--*/
+  if ($('.text-slider').length == 1) {
+    var typed_strings = $('.text-slider-items').text();
+    var typed = new Typed('.text-slider', {
+      strings: typed_strings.split(','),
+      typeSpeed: 80,
+      loop: true,
+      backDelay: 1100,
+      backSpeed: 30
+    });
+  }
 
-				// No section for this link? Bail.
-					if ($section.length < 1)
-						return;
+  /*--/ Testimonials owl /--*/
+  $('#testimonial-mf').owlCarousel({
+    margin: 20,
+    autoplay: true,
+    autoplayTimeout: 4000,
+    autoplayHoverPause: true,
+    responsive: {
+      0: {
+        items: 1,
+      }
+    }
+  });
 
-				// Scrollex.
-					$section.scrollex({
-						mode: 'middle',
-						top: '-10vh',
-						bottom: '-10vh',
-						initialize: function() {
+  // Portfolio details carousel
+  $(".portfolio-details-carousel").owlCarousel({
+    autoplay: true,
+    dots: true,
+    loop: true,
+    items: 1
+  });
 
-							// Deactivate section.
-								$section.addClass('inactive');
-
-						},
-						enter: function() {
-
-							// Activate section.
-								$section.removeClass('inactive');
-
-							// No locked links? Deactivate all links and activate this section's one.
-								if ($nav_a.filter('.active-locked').length == 0) {
-
-									$nav_a.removeClass('active');
-									$this.addClass('active');
-
-								}
-
-							// Otherwise, if this section's link is the one that's locked, unlock it.
-								else if ($this.hasClass('active-locked'))
-									$this.removeClass('active-locked');
-
-						}
-					});
-
-			});
-
-	// Scrolly.
-		$('.scrolly').scrolly();
-
-	// Header (narrower + mobile).
-
-		// Toggle.
-			$(
-				'<div id="headerToggle">' +
-					'<a href="#header" class="toggle"></a>' +
-				'</div>'
-			)
-				.appendTo($body);
-
-		// Header.
-			$('#header')
-				.panel({
-					delay: 500,
-					hideOnClick: true,
-					hideOnSwipe: true,
-					resetScroll: true,
-					resetForms: true,
-					side: 'left',
-					target: $body,
-					visibleClass: 'header-visible'
-				});
+  // Initiate venobox (lightbox feature used in portofilo)
+  $(document).ready(function() {
+    $('.venobox').venobox({
+      'share': false
+    });
+  });
 
 })(jQuery);
