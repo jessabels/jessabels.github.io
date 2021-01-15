@@ -765,6 +765,11 @@ a:hover {
   color: #4e4e4e;
 }
 
+.skill-mf img:hover {
+  transform: rotate(360deg);
+  transition: all 0.3s ease-in-out 0s;
+}
+
 .skill-mf .progress {
   background-color: #cde1f8;
   margin: 0.5rem 0 1.2rem 0;
