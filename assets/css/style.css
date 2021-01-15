@@ -741,6 +741,10 @@ a:hover {
 /*--------------------------------------------------------------
 # About
 --------------------------------------------------------------*/
+
+.about-img img {
+  border-radius: 50%;
+}
 .about-mf .box-shadow-full {
   padding-top: 4rem;
   padding-bottom: 4rem;
@@ -763,6 +767,10 @@ a:hover {
 
 .skill-mf span {
   color: #4e4e4e;
+}
+
+.skill-mf ul {
+  padding-left: 0;
 }
 
 .skill-mf img:hover {
@@ -1056,11 +1064,19 @@ a:hover {
 /*--------------------------------------------------------------
 # Contact
 --------------------------------------------------------------*/
+
+#contact {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
 .footer-paralax {
   padding: 4rem 0 0 0;
 }
 
 .contact-mf {
+  display: flex;
+  justify-content: center;
   margin-top: 4rem;
 }
 
